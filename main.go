@@ -1,12 +1,17 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/tirlochanarora16/go_tmdb/requests"
 )
+
+type Response struct {
+	page int
+}
 
 func main() {
 	err := godotenv.Load()
@@ -15,5 +20,12 @@ func main() {
 		log.Fatal("error loading .env file")
 	}
 
-	fmt.Println("TMDB movies app", os.Getenv("API_KEY"))
+	const URL string = "https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page=1&sort_by=popularity.desc"
+
+	var response Response
+	data, err := requests.MakeHttpRequest(URL)
+	err = json.Unmarshal(data, &response)
+
+	fmt.Println(response.page)
+
 }
