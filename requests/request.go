@@ -16,7 +16,9 @@ func MakeHttpRequest(url string) ([]byte, error) {
 		return nil, err
 	}
 
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", os.Getenv("API_READ_ACCESS_TOKEN")))
+	token := fmt.Sprintf("Bearer %s", os.Getenv("API_READ_ACCESS_TOKEN"))
+
+	req.Header.Add("Authorization", token)
 	resp, err := client.Do(req)
 
 	if err != nil {
