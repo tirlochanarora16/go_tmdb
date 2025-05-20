@@ -58,5 +58,5 @@ func FetchMoviesData() {
 		return
 	}
 
-	fmt.Println(response.Results[0])
+	// fmt.Println(response.Results[0])
 }
