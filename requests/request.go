@@ -1,13 +1,17 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/tirlochanarora16/go_tmdb/constants"
+	"github.com/tirlochanarora16/go_tmdb/models"
 )
 
-func MakeHttpRequest(url string) ([]byte, error) {
+func makeHttpRequest(url string) ([]byte, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 
@@ -36,4 +40,23 @@ func MakeHttpRequest(url string) ([]byte, error) {
 	resp.Body.Close()
 
 	return body, nil
+}
+
+func FetchMoviesData() {
+	var response models.MoviesResponse
+	data, err := makeHttpRequest(constants.TopRatedMoviesUrl)
+
+	if err != nil {
+		fmt.Println("failed hitting the api")
+		return
+	}
+
+	err = json.Unmarshal(data, &response)
+
+	if err != nil {
+		fmt.Println("failed hitting the api")
+		return
+	}
+
+	fmt.Println(response.Results[0])
 }
