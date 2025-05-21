@@ -20,4 +20,5 @@ type MoviesList struct {
 type MoviesResponse struct {
 	Page    int
 	Results []MoviesList
+	Error   error
 }

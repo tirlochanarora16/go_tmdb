@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/tirlochanarora16/go_tmdb/constants"
 	"github.com/tirlochanarora16/go_tmdb/models"
 )
 
@@ -42,21 +41,21 @@ func makeHttpRequest(url string) ([]byte, error) {
 	return body, nil
 }
 
-func FetchMoviesData() {
+func FetchMoviesData(url string, ch chan models.MoviesResponse) {
 	var response models.MoviesResponse
-	data, err := makeHttpRequest(constants.TopRatedMoviesUrl)
+	data, err := makeHttpRequest(url)
 
 	if err != nil {
-		fmt.Println("failed hitting the api")
+		ch <- models.MoviesResponse{Page: 0, Results: nil, Error: err}
 		return
 	}
 
 	err = json.Unmarshal(data, &response)
 
 	if err != nil {
-		fmt.Println("failed hitting the api")
+		ch <- models.MoviesResponse{Page: 0, Results: nil, Error: err}
 		return
 	}
 
-	// fmt.Println(response.Results[0])
+	ch <- response
 }
